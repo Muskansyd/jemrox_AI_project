@@ -36,7 +36,6 @@ class Chat {
   }
 }
 
-
 // ===== App State =====
 const appState = {
   currentUser: JSON.parse(localStorage.getItem('Jemrox_user')) || null,
