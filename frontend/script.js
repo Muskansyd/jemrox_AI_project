@@ -931,6 +931,19 @@ async function sendChatMessage(message, attachedFiles, chatType) {
     appendMessageToUI('user', message, attachedFiles);
     showThinkingIndicator(chatMessages);
 
+    // 🔥 FIX: Request chalne se PEHLE hi user ka apna message local state array memory mein save karlo
+    if (appState.currentChat) {
+        // Agar addMessage function use ho raha hai
+        if (typeof appState.currentChat.addMessage === "function") {
+            appState.currentChat.addMessage(message, 'user');
+        } else if (appState.currentChat.messages) {
+            // Fallback agar direct array array storage object mapping hai
+            appState.currentChat.messages.push({ text: message, sender: 'user', mode: 'user', content: message });
+        }
+        saveChatsToStorage('tech');
+        updateChatHistory('tech');
+    }
+
     try {
         const response = await fetch("https://jemrox-ai-project.vercel.app/chat/send", {
             method: "POST",
@@ -954,7 +967,6 @@ async function sendChatMessage(message, attachedFiles, chatType) {
 
             if (appState.currentMode === 'build') {
                 try {
-                    // JSON nikaalne ka sabse solid tareeka
                     let text = data.ai_response;
                     const start = text.indexOf('{');
                     const end = text.lastIndexOf('}') + 1;
@@ -963,29 +975,27 @@ async function sendChatMessage(message, attachedFiles, chatType) {
                         const cleanJson = text.substring(start, end);
                         const webCode = JSON.parse(cleanJson);
 
-                        // 🔥 FIX: Current chat ID se project dhoondo taaki galat project mein save na ho
-    const currentId = appState.currentTechChatId || appState.activeBuildProjectId;
-    let project = appState.projects.find(p => String(p.id) === String(currentId));
+                        const currentId = appState.currentTechChatId || appState.activeBuildProjectId;
+                        let project = appState.projects.find(p => String(p.id) === String(currentId));
 
-    if (project) {
-        project.webCode = webCode; // Code memory mein gaya
-        saveProjectsToStorage();   // LocalStorage mein lock ho gaya
-        console.log("✅ Project saved to history successfully!");
-    } else {
-        console.log("⚠️ Project not found to save code.");
-    }
+                        if (project) {
+                            project.webCode = webCode; 
+                            saveProjectsToStorage();   
+                            console.log("✅ Project saved to history successfully!");
+                        } else {
+                            console.log("⚠️ Project not found to save code.");
+                        }
 
-         if (appState.activeBuildProjectId) {
-           let project = appState.projects.find(p => p.id === appState.activeBuildProjectId);
-          if (project) {
-          project.webCode = webCode; // Project mein code daal diya
-          saveProjectsToStorage();   // LocalStorage mein pakka save kar diya
-    }
-}
+                        if (appState.activeBuildProjectId) {
+                            let project = appState.projects.find(p => p.id === appState.activeBuildProjectId);
+                            if (project) {
+                                project.webCode = webCode; 
+                                saveProjectsToStorage();   
+                            }
+                        }
                         
                         console.log("3. JSON Parse Success! Editor update ho raha hai...");
                         
-                        // Files Sidebar aur Editor Update
                         if (typeof updateFileSidebar === "function") updateFileSidebar(webCode);
                         if (typeof renderWebsite === "function") renderWebsite(webCode.html, webCode.css, webCode.js);
                         
@@ -1002,20 +1012,23 @@ async function sendChatMessage(message, attachedFiles, chatType) {
                 appendMessageToUI('ai', data.ai_response);
             }
 
-                        // AI ka reply save karo
+            // AI ka reply save karo
             if (appState.currentChat) {
-                appState.currentChat.addMessage(data.ai_response, 'ai');
+                if (typeof appState.currentChat.addMessage === "function") {
+                    appState.currentChat.addMessage(data.ai_response, 'ai');
+                } else if (appState.currentChat.messages) {
+                    appState.currentChat.messages.push({ text: data.ai_response, sender: 'ai', mode: 'ai', content: data.ai_response });
+                }
                 saveChatsToStorage('tech');
                 updateChatHistory('tech');
             }
-        } // Closing for if (response.ok)
+        } 
     } catch (error) {
         removeThinkingIndicator();
         console.error("Error:", error);
     }
     updateChatPreview();
-} // Closing for async function
-
+}
 
 // Ye naya wala helper function hai jo images ko bhi handle karega
 function appendMessageToUI(sender, text, files = []) {
