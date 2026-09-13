@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export', // Next.js ko static HTML export mode par force karna
   typescript: {
-    // Next.js ko build ke waqt TypeScript errors ignore karne ke liye force karna
     ignoreBuildErrors: true,
   },
   eslint: {
-    // ESLint ki warnings ko bhi ignore karna taaki build na ruke
     ignoreDuringBuilds: true,
   }
 };
