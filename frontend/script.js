@@ -477,7 +477,7 @@ async function handleSignUp(e) {
   var password = document.getElementById('signUpPassword').value;
 
   try {
-    const response = await fetch("https://jemrox-ai-project.vercel.app/auth/register", {
+    const response = await fetch("https://jemrox-ai-project.vercel.app", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -514,7 +514,7 @@ async function handleSignIn(e) {
   var password = document.getElementById('signInPassword').value;
 
   try {
-    const response = await fetch("https://jemrox-ai-project.vercel.app/auth/login", {
+    const response = await fetch("https://jemrox-ai-project.vercel.app", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -902,7 +902,7 @@ async function sendChatMessage(message, attachedFiles, chatType) {
     showThinkingIndicator(chatMessages);
 
     try {
-        const response = await fetch("https://jemrox-ai-project.vercel.app/chat/send", {
+        const response = await fetch("https://jemrox-ai-project.vercel.app", {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json", 
@@ -1973,7 +1973,7 @@ async function sendToBackend(description) {
   };
 
   try {
-    const response = await fetch("https://jemrox-ai-project.vercel.app/chat/send", {
+    const response = await fetch("https://jemrox-ai-project.vercel.app", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
       body: JSON.stringify(requestBody)
