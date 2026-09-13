@@ -13,11 +13,11 @@ from database import get_connection
 # ==============================
 app = FastAPI(title="Jemrox Auth API")
 
-# CORS Configuration for dynamic routing
+# CORS Configuration - Strict cross-origin bypass for production domains
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all connections for smooth communication
-    allow_credentials=True,
+    allow_origins=["*"],  # Allows requests from any origin (Crucial for Vercel dynamic URLs)
+    allow_credentials=False, # Must be False when allow_origins is set to "*" in serverless architecture
     allow_methods=["*"],
     allow_headers=["*"],
 )
