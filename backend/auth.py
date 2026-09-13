@@ -1,4 +1,4 @@
-# auth.py
+import os
 from ai_service import get_ai_response 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,16 +8,15 @@ from jose import jwt
 from datetime import datetime, timedelta
 from database import get_connection
 
- # make sure database.py exists
 # ==============================
 # FastAPI App
 # ==============================
 app = FastAPI(title="Jemrox Auth API")
 
-# CORS (allow all origins for now)
+# CORS Configuration for dynamic routing
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Ye sab ko allow kar dega (Testing ke liye best hai)
+    allow_origins=["*"],  # Allows all connections for smooth communication
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,13 +27,13 @@ app.add_middleware(
 # ==============================
 SECRET_KEY = "jemrox_super_secret_key_change_this"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours validity
 
-# Use Argon2 (works better on Windows than bcrypt)
+# Cryptographic Context using Argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 # ==============================
-# Pydantic Models
+# Pydantic Models (Data Validation)
 # ==============================
 class RegisterRequest(BaseModel):
     username: str
@@ -67,100 +66,110 @@ def create_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ==============================
-# Register Endpoint
+# Register Endpoint (Supabase/PostgreSQL ready)
 # ==============================
 @app.post("/auth/register")
 async def register(data: RegisterRequest):
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id FROM users WHERE email = ?", (data.email,))
-    if cursor.fetchone():
-        conn.close()
-        raise HTTPException(status_code=400, detail="User already exists")
+    try:
+        # PostgreSQL uses %s instead of ? placeholders
+        cursor.execute("SELECT id FROM users WHERE email = %s;", (data.email,))
+        if cursor.fetchone():
+            raise HTTPException(status_code=400, detail="User already registered")
 
-    hashed = hash_password(data.password)
-    cursor.execute(
-        "INSERT INTO users(username, email, password) VALUES (?, ?, ?)",
-        (data.username, data.email, hashed)
-    )
-    conn.commit()
-    conn.close()
-    return {"message": "User registered successfully"}
+        hashed = hash_password(data.password)
+        cursor.execute(
+            "INSERT INTO users (username, email, password) VALUES (%s, %s, %s);",
+            (data.username, data.email, hashed)
+        )
+        conn.commit()
+        return {"message": "User registered successfully"}
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        cursor.close()
+        conn.close()
 
 # ==============================
-# Login Endpoint
+# Login Endpoint (Supabase/PostgreSQL ready)
 # ==============================
 @app.post("/auth/login")
 async def login(data: LoginRequest):
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM users WHERE email = ?", (data.email,))
-    user = cursor.fetchone()
-    if not user or not verify_password(data.password, user["password"]):
+    try:
+        cursor.execute("SELECT * FROM users WHERE email = %s;", (data.email,))
+        user = cursor.fetchone()
+        
+        if not user or not verify_password(data.password, user["password"]):
+            raise HTTPException(status_code=400, detail="Invalid credentials")
+
+        token = create_token({
+            "user_id": user["id"],
+            "email": user["email"]
+        })
+
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "user_id": user["id"],
+            "username": user["username"],
+            "email": user["email"]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        cursor.close()
         conn.close()
-        raise HTTPException(status_code=400, detail="Invalid credentials")
 
-    token = create_token({
-        "user_id": user["id"],
-        "email": user["email"]
-    })
-
-    conn.close()
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "user_id": user["id"],
-        "username": user["username"],
-        "email": user["email"]
-    }
-
-# backend/auth.py mein /chat/send ko isse replace karo
+# ==============================
+# Chat/AI Endpoint (Fixed Syntax & Memory History Flow)
+# ==============================
 @app.post("/chat/send")
 async def save_and_get_ai_chat(data: ChatRequest):
     print(f"\n--- [DEBUG] NEW REQUEST ---")
     print(f"Mode Received: {data.mode}")
     print(f"User Message: {data.content}")
+    
     conn = get_connection()
-    # Ye line zaroori hai taaki database se data r["column"] ki tarah mile
-    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
     try:
-        # --- CHANGE 1: Purani History uthana ---
-        # Hum pichle 5 messages le rahe hain taaki AI ko sab yaad rahe
+        # --- 1. Fetch Chat History (PostgreSQL Syntax) ---
         cursor.execute(
-            "SELECT content, mode FROM messages WHERE chat_id = ? ORDER BY id DESC LIMIT 5", 
+            "SELECT content, mode FROM messages WHERE chat_id = %s ORDER BY id DESC LIMIT 5;", 
             (data.chat_id,)
         )
         rows = cursor.fetchall()
         
-        # History ko AI ke samajhne layak format (list) mein badlo
         history = []
         for r in reversed(rows):
-            # Agar mode 'ai' hai toh role 'assistant', warna 'user'
             role = "assistant" if r["mode"] == "ai" else "user"
             history.append({"role": role, "content": r["content"]})
 
-        # --- CHANGE 2: User ka current message save karo ---
+        # --- 2. Save User's Current Message ---
         cursor.execute(
-            "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (?, ?, ?, ?)",
+            "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (%s, %s, %s, %s);",
             (data.user_id, data.chat_id, data.content, data.mode)
         )
         conn.commit()
 
-        # --- CHANGE 3: AI ko History ke saath call karo ---
+        # --- 3. Call AI Service with History ---
         try:
-            # Ab hum user input ke saath pichli baatein (history) bhi bhej rahe hain
             ai_reply = get_ai_response(data.content, mode=data.mode, history=history)
         except Exception as ai_err:
             print(f"AI Service Error: {ai_err}")
-            ai_reply = "AI Service busy hai, please check Groq Key."
+            ai_reply = "AI Service busy right now. Please verify configurations."
 
-        # --- CHANGE 4: AI ka reply database mein save karo ---
+        # --- 4. Save AI Reply to Database ---
         cursor.execute(
-            "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (?, ?, ?, ?)",
+            "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (%s, %s, %s, %s);",
             (0, data.chat_id, ai_reply, "ai")
         )
         conn.commit()
@@ -171,13 +180,15 @@ async def save_and_get_ai_chat(data: ChatRequest):
         }
 
     except Exception as e:
+        conn.rollback()
         print(f"Database Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
+        cursor.close()
         conn.close()
 
 # ==============================
-# Run directly
+# Execution Trigger
 # ==============================
 if __name__ == "__main__":
     import uvicorn
