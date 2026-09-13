@@ -1310,21 +1310,32 @@ function applyHighlight(code, language) {
   return highlighted;
 }
 
-// ===== Chat History =====
+// ===== Chat History (Fixed User Message Rendering Sync Bug) =====
 function loadChatMessages(chat) {
   var chatMessages = document.getElementById('chatMessages');
+  if (!chatMessages) return;
   chatMessages.innerHTML = '';
   if (!chat || !chat.messages) return;
 
   chat.messages.forEach(function (msg) {
+    // Dynamic mapping configuration: database model elements ko track karna
+    var sender = msg.sender || msg.mode || (msg.user_id === 0 ? 'ai' : 'user');
+    var text = msg.text || msg.content || '';
+
     var div = document.createElement('div');
-    div.className = 'chat-message ' + msg.sender;
-    var html = '<div class="message-content ' + msg.sender + '">' + (msg.sender === 'ai' ? formatMessage(msg.text) : escapeHtml(msg.text));
+    div.className = 'chat-message ' + sender;
+    
+    var html = '<div class="message-content ' + sender + '">' + 
+               (sender === 'ai' ? formatMessage(text) : escapeHtml(text));
+               
     if (msg.attachedFiles && msg.attachedFiles.length > 0) {
       html += '<div class="attached-files-display">';
       msg.attachedFiles.forEach(function (file) {
-        if (file.type === 'image') html += '<img src="' + file.dataUrl + '" alt="' + file.name + '" class="message-attachment-image">';
-        else html += '<div class="message-attachment-file">' + file.name + '</div>';
+        if (file.type === 'image') {
+          html += '<img src="' + file.dataUrl + '" alt="' + file.name + '" class="message-attachment-image">';
+        } else {
+          html += '<div class="message-attachment-file">' + file.name + '</div>';
+        }
       });
       html += '</div>';
     }
@@ -1336,6 +1347,7 @@ function loadChatMessages(chat) {
   autoScrollToLatestMessage();
   updateChatPreview();
 }
+
 
 function updateChatHistory(chatType) {
   var historyEl = document.getElementById('chatHistory');
