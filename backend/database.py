@@ -3,14 +3,16 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 
-# Load environment variables from the .env file
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+# Try loading from local path, but allow it to gracefully fallback if running on cloud servers
+env_path = os.path.join(os.path.dirname(__file__), ".env")
+if os.path.exists(env_path):
+    load_dotenv(dotenv_path=env_path)
 
-# Fetch the database connection string from system environment variables
+# Fetch the database connection string from environment context safely
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
-# Establish a secure connection to the remote PostgreSQL database
+    # Establish a clean, runtime-safe production link to the remote PostgreSQL database
     conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
     return conn
 
@@ -18,7 +20,7 @@ def init_db():
     conn = get_connection()
     cursor = conn.cursor()
 
-    # 1. USERS TABLE (PostgreSQL configuration)
+    # 1. USERS TABLE (PostgreSQL schema configuration)
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
        id SERIAL PRIMARY KEY,
@@ -29,7 +31,7 @@ def init_db():
     );
     """)
 
-    # 2. PROJECTS TABLE (PostgreSQL configuration)
+    # 2. PROJECTS TABLE (PostgreSQL schema configuration)
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS projects (
         id SERIAL PRIMARY KEY,
@@ -43,7 +45,7 @@ def init_db():
     );
     """)
 
-    # 3. MESSAGES TABLE (PostgreSQL configuration)
+    # 3. MESSAGES TABLE (PostgreSQL schema configuration)
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS messages (
         id SERIAL PRIMARY KEY,
@@ -60,6 +62,6 @@ def init_db():
     conn.close()
     print("Database tables initialized successfully on Supabase!")
 
-# Initialize DB on server start
+# Initialize DB structure framework safely
 if __name__ == "__main__":
     init_db()
