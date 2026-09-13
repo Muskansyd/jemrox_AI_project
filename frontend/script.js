@@ -472,15 +472,21 @@ function closeAuthModal() {
 async function handleSignUp(e) {
   e.preventDefault();
 
-  var username = document.getElementById('signUpName').value;
-  var email = document.getElementById('signUpEmail').value;
-  var password = document.getElementById('signUpPassword').value;
+  var username = document.getElementById('signUpName').value.trim();
+  var email = document.getElementById('signUpEmail').value.trim();
+  var password = document.getElementById('signUpPassword').value.trim();
+
+  if (!username || !email || !password) {
+      alert("Please fill in all registration fields.");
+      return;
+  }
 
   try {
     const response = await fetch("https://jemrox-ai-project.vercel.app/auth/register", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: JSON.stringify({
         username: username,
@@ -489,35 +495,51 @@ async function handleSignUp(e) {
       })
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get("content-type");
+    let data = null;
+
+    // Strict validation: Check if server returned valid JSON string layout configuration
+    if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+    } else {
+        const errorText = await response.text();
+        console.error("Server Crash Log Payload Output:", errorText);
+        throw new Error(errorText || `HTTP server error status code: ${response.status}`);
+    }
+
     console.log(data);
 
     if (response.ok) {
-      alert("Account created. Now login.");
-
-      // Auto fill login email
+      alert("🎉 Account created successfully! Please proceed to login.");
+      // Auto fill login email framework layout parameters
       document.getElementById('signInEmail').value = email;
-
     } else {
-      alert(data.detail || "Register failed");
+      alert(data?.detail || "Registration criteria constraints violation.");
     }
 
   } catch (error) {
-    console.error("Register error:", error);
-    alert("Server error");
+    console.error("Register Intercept Trace Error Log:", error);
+    alert("⚠️ Server Intercept Message: " + error.message);
   }
 }
+
 async function handleSignIn(e) {
   e.preventDefault();
 
-  var email = document.getElementById('signInEmail').value;
-  var password = document.getElementById('signInPassword').value;
+  var email = document.getElementById('signInEmail').value.trim();
+  var password = document.getElementById('signInPassword').value.trim();
+
+  if (!email || !password) {
+      alert("Please fill in all login credentials blocks.");
+      return;
+  }
 
   try {
     const response = await fetch("https://jemrox-ai-project.vercel.app/auth/login", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: JSON.stringify({
         email: email,
@@ -525,10 +547,20 @@ async function handleSignIn(e) {
       })
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get("content-type");
+    let data = null;
+
+    if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+    } else {
+        const errorText = await response.text();
+        console.error("Server Login Crash Log Payload Output:", errorText);
+        throw new Error(errorText || `HTTP server login error status code: ${response.status}`);
+    }
+
     console.log(data);
 
-    if (response.ok) {
+    if (response.ok && data) {
       var user = {
         id: data.user_id,
         name: data.username,
@@ -537,28 +569,25 @@ async function handleSignIn(e) {
 
       appState.currentUser = user; 
 
-
       localStorage.setItem('Jemrox_user', JSON.stringify(user));
       localStorage.setItem('token', data.access_token);
 
       updateUserProfile();
-      
       closeAuthModal();
+      showAppPage(); 
 
-       showAppPage(); 
-
-      alert("Login successful");
-
+      alert("Login successful! Welcome back.");
     } else {
-      alert(data.detail || "Login failed");
+      alert(data?.detail || "Authentication verification check failure.");
     }
 
   } catch (error) {
-    console.error("Login error:", error);
-    alert("Server error");
+    console.error("Login Intercept Trace Error Log:", error);
+    alert("⚠️ Server Login Intercept Message: " + error.message);
   }
 }
-// ===== handleLogout ko hamesha BAHAR rakhein =====
+
+// ===== handleLogout  =====
 function handleLogout() {
   appState.currentUser = null;
   localStorage.removeItem('Jemrox_user');
@@ -716,7 +745,7 @@ async function handleSendMessage(event) {
         return;
     }
 
-    appState.isLoading = true; // Button lock
+        appState.isLoading = true; // Button lock
     try {
         if (appState.currentMode === 'build') {
             await handleBuildRequest(message, attachedFiles);
@@ -732,6 +761,7 @@ async function handleSendMessage(event) {
         appState.isLoading = false; // Button wapas chalne lagega (Unlock)
     }
 }
+
 // ===== Build Mode =====
 
 async function handleBuildRequest(description, attachedFiles) {
