@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // Next.js ko static HTML export mode par force karna
+  output: 'export', 
   typescript: {
     ignoreBuildErrors: true,
   },
