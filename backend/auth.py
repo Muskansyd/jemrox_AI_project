@@ -1,14 +1,14 @@
 # auth.py
-from backend.ai_service import get_ai_response 
-import sqlite3
+from ai_service import get_ai_response 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta
-from backend.database import get_connection  # make sure database.py exists
+from database import get_connection
 
+ # make sure database.py exists
 # ==============================
 # FastAPI App
 # ==============================
