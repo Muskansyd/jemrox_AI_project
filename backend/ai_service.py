@@ -60,7 +60,7 @@ def get_ai_response(user_input: str, mode: str = "tech", history: list = None) -
     try:
         # Requesting a chat completion from the chosen AI engine model structure
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-specdec",  # Stable production model
+            model="openai/gpt-oss-120b",  # Stable production model
             messages=messages,
             temperature=0.6,               # Balances creativity and factual consistency
         )
