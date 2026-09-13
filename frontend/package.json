@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "npm install --legacy-peer-deps && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -72,6 +72,11 @@
     "overrides": {
       "@types/react": "19.2.7",
       "@types/react-dom": "19.2.3"
+    }
+  },
+  "overrides": {
+    "react-day-picker": {
+      "date-fns": "$date-fns"
     }
   }
 }
