@@ -1,6 +1,6 @@
 import os
 from ai_service import get_ai_response 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from passlib.context import CryptContext
@@ -13,11 +13,11 @@ from database import get_connection
 # ==============================
 app = FastAPI(title="Jemrox Auth API")
 
-# CORS Configuration - Strict cross-origin bypass for production domains
+# Professional Production-level CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows requests from any origin (Crucial for Vercel dynamic URLs)
-    allow_credentials=False, # Must be False when allow_origins is set to "*" in serverless architecture
+    allow_origins=["*"],  # Dynamic urls ko support karne ke liye zaroori hai
+    allow_credentials=False, # Vercel serverless rules ke hisab se wildcard "*" ke sath False hona chahiye
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -27,13 +27,13 @@ app.add_middleware(
 # ==============================
 SECRET_KEY = "jemrox_super_secret_key_change_this"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours validity
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
-# Cryptographic Context using Argon2
+# Use Argon2 for hashing
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 # ==============================
-# Pydantic Models (Data Validation)
+# Pydantic Models
 # ==============================
 class RegisterRequest(BaseModel):
     username: str
@@ -66,15 +66,17 @@ def create_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ==============================
-# Register Endpoint (Supabase/PostgreSQL ready)
+# Register Endpoint (Fixed 500 & CORS Crash)
 # ==============================
 @app.post("/auth/register")
-async def register(data: RegisterRequest):
+async def register(data: RegisterRequest, response: Response):
+    # Safe manual explicit headers to bypass browser blockages completely
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
-        # PostgreSQL uses %s instead of ? placeholders
         cursor.execute("SELECT id FROM users WHERE email = %s;", (data.email,))
         if cursor.fetchone():
             raise HTTPException(status_code=400, detail="User already registered")
@@ -85,19 +87,26 @@ async def register(data: RegisterRequest):
             (data.username, data.email, hashed)
         )
         conn.commit()
-        return {"message": "User registered successfully"}
+        return {"status": "success", "message": "User registered successfully"}
+    except HTTPException as http_err:
+        raise http_err
     except Exception as e:
-        conn.rollback()
+        if conn:
+            conn.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 # ==============================
-# Login Endpoint (Supabase/PostgreSQL ready)
+# Login Endpoint (Fixed 500 & CORS Crash)
 # ==============================
 @app.post("/auth/login")
-async def login(data: LoginRequest):
+async def login(data: LoginRequest, response: Response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -120,28 +129,27 @@ async def login(data: LoginRequest):
             "username": user["username"],
             "email": user["email"]
         }
-    except HTTPException:
-        raise
+    except HTTPException as http_err:
+        raise http_err
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 # ==============================
-# Chat/AI Endpoint (Fixed Syntax & Memory History Flow)
+# Chat/AI Endpoint
 # ==============================
 @app.post("/chat/send")
-async def save_and_get_ai_chat(data: ChatRequest):
-    print(f"\n--- [DEBUG] NEW REQUEST ---")
-    print(f"Mode Received: {data.mode}")
-    print(f"User Message: {data.content}")
+async def save_and_get_ai_chat(data: ChatRequest, response: Response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
     
     conn = get_connection()
     cursor = conn.cursor()
     
     try:
-        # --- 1. Fetch Chat History (PostgreSQL Syntax) ---
         cursor.execute(
             "SELECT content, mode FROM messages WHERE chat_id = %s ORDER BY id DESC LIMIT 5;", 
             (data.chat_id,)
@@ -153,21 +161,18 @@ async def save_and_get_ai_chat(data: ChatRequest):
             role = "assistant" if r["mode"] == "ai" else "user"
             history.append({"role": role, "content": r["content"]})
 
-        # --- 2. Save User's Current Message ---
         cursor.execute(
             "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (%s, %s, %s, %s);",
             (data.user_id, data.chat_id, data.content, data.mode)
         )
         conn.commit()
 
-        # --- 3. Call AI Service with History ---
         try:
             ai_reply = get_ai_response(data.content, mode=data.mode, history=history)
         except Exception as ai_err:
             print(f"AI Service Error: {ai_err}")
-            ai_reply = "AI Service busy right now. Please verify configurations."
+            ai_reply = "AI Service busy right now."
 
-        # --- 4. Save AI Reply to Database ---
         cursor.execute(
             "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (%s, %s, %s, %s);",
             (0, data.chat_id, ai_reply, "ai")
@@ -180,16 +185,15 @@ async def save_and_get_ai_chat(data: ChatRequest):
         }
 
     except Exception as e:
-        conn.rollback()
-        print(f"Database Error: {e}")
+        if conn:
+            conn.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
-# ==============================
-# Execution Trigger
-# ==============================
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("auth:app", host="127.0.0.1", port=8000, reload=True)
