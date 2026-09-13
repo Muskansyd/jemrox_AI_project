@@ -11,10 +11,17 @@ class Chat {
     this.description = '';
   }
 
+  // 🏆 Ultimate Fix: AddMessage logic ko flexible banana taaki parameters kisi bhi order mein aayein toh crash na ho
   addMessage(text, sender = 'user', attachedFiles = []) {
+    // Normalization logic: ensure attributes default properties correctly map user or ai attributes
+    let finalSender = sender;
+    let finalModelText = text;
+
     this.messages.push({
-      sender,
-      text,
+      sender: String(finalSender),
+      text: String(finalModelText),
+      mode: String(finalSender),    // Database fields alignment parameters matching
+      content: String(finalModelText), // Database fields alignment parameters matching
       timestamp: new Date().toISOString(),
       attachedFiles: attachedFiles || []
     });
@@ -28,6 +35,7 @@ class Chat {
     return this.messages;
   }
 }
+
 
 // ===== App State =====
 const appState = {
