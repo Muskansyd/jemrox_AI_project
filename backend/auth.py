@@ -66,17 +66,18 @@ def create_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ==============================
-# Register Endpoint (Fixed 500 & CORS Crash)
+# Register Endpoint (Fixed 500 JSON String Crash)
 # ==============================
 @app.post("/auth/register")
 async def register(data: RegisterRequest, response: Response):
-    # Safe manual explicit headers to bypass browser blockages completely
     response.headers["Access-Control-Allow-Origin"] = "*"
     
-    conn = get_connection()
-    cursor = conn.cursor()
-
+    conn = None
+    cursor = None
     try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        
         cursor.execute("SELECT id FROM users WHERE email = %s;", (data.email,))
         if cursor.fetchone():
             raise HTTPException(status_code=400, detail="User already registered")
@@ -88,12 +89,14 @@ async def register(data: RegisterRequest, response: Response):
         )
         conn.commit()
         return {"status": "success", "message": "User registered successfully"}
+    
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
         if conn:
             conn.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        # Yeh explicit structural detail JSON string lautaega jo frontend ko crash hone se bachaega
+        raise HTTPException(status_code=500, detail=f"Database System Error Trace: {str(e)}")
     finally:
         if cursor:
             cursor.close()
