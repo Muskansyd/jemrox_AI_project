@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JEMROX AI - AI Website Builder & Assistant</title>
+  <meta name="description" content="JEMROX AI is an AI-powered website builder and assistant. Create stunning websites, write code, and chat about tech with cutting-edge AI. No coding required." />
+  <meta name="keywords" content="AI website builder, AI assistant, website creation, no-code builder, AI code generator, web builder" />
+  <meta name="author" content="JEMROX AI" />
+  <meta name="theme-color" content="#00d4ff" />
+  
+  <!-- Open Graph for Social Media -->
+  <meta property="og:title" content="JEMROX AI - AI Website Builder" />
+  <meta property="og:description" content="Build stunning websites with AI in minutes. No coding needed." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="og-image.jpeg" />
+  
+  <!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+
+<!-- Apple Touch Icon -->
+<link rel="apple-touch-icon" href="logo-512.jpeg">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Splash Screen -->
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-logo-icon">
+        <svg width="48" height="48" viewBox="0 0 28 28" fill="none">
+          <path d="M14 2L26 8V20L14 26L2 20V8L14 2Z" stroke="#00D4FF" stroke-width="2" fill="none"/>
+          <circle cx="14" cy="14" r="4" fill="#00D4FF"/>
+        </svg>
+      </div>
+      <h1 class="splash-logo">JEMROX AI</h1>
+      <div class="splash-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Landing Page -->
+  <div id="landingPage" class="landing-page">
+
+    <!-- Hero Section -->
+    <section class="landing-hero">
+      <div class="landing-container">
+        <div class="landing-header hero-entrance">
+          <div class="landing-logo-icon">
+            <svg width="56" height="56" viewBox="0 0 28 28" fill="none">
+              <path d="M14 2L26 8V20L14 26L2 20V8L14 2Z" stroke="#00D4FF" stroke-width="2" fill="none"/>
+              <circle cx="14" cy="14" r="4" fill="#00D4FF"/>
+            </svg>
+          </div>
+          <h1 class="landing-logo-text">JEMROX AI</h1>
+          <p class="landing-tagline">Build stunning websites with AI in minutes</p>
+          <p class="landing-subtitle">No coding needed. Just describe what you want and let our AI create it for you.</p>
+        </div>
+        <div class="landing-badges hero-entrance hero-entrance-delay-1">
+          <div class="landing-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M12 3v18"/></svg>
+            <span>Build Websites</span>
+          </div>
+          <div class="landing-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>Generate Code</span>
+          </div>
+          <div class="landing-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Tech Chat</span>
+          </div>
+        </div>
+        <div class="landing-cta hero-entrance hero-entrance-delay-2">
+          <button id="buildBtn" class="btn btn-primary btn-lg">Start Building</button>
+          <a href="#features-section" class="btn btn-ghost btn-lg">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="landing-section" id="features-section">
+      <div class="section-container">
+        <div class="section-heading reveal-on-scroll">
+          <h2>What  AI Can Do</h2>
+          <p>Powerful capabilities designed to help you build real projects, faster.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card reveal-on-scroll">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>AI Website Builder</h3>
+            <p>Describe what you want in plain language. JEMROX AI generates the HTML, CSS, and JavaScript for you through a conversational interface.</p>
+          </div>
+          <div class="feature-card reveal-on-scroll">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Project-Based Creation</h3>
+            <p>Each website lives in its own project. Organize, revisit, and continue building any project right where you left off.</p>
+          </div>
+          <div class="feature-card reveal-on-scroll">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3>Real-Time Preview</h3>
+            <p>See your website come to life as you build. Toggle between mobile, tablet, and desktop previews instantly.</p>
+          </div>
+          <div class="feature-card reveal-on-scroll">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3>Tech Chat for Coding Help</h3>
+            <p>Switch to Tech Chat mode to ask questions about JavaScript, React, Python, CSS, APIs, and more. Get instant, helpful answers.</p>
+          </div>
+          <div class="feature-card reveal-on-scroll">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h3>File Upload Support</h3>
+            <p>Attach images, documents, and files directly to your chat. JEMROX AI uses them as context when building your site.</p>
+          </div>
+          <div class="feature-card reveal-on-scroll">
+            <div class="feature-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            </div>
+            <h3>Beginner-Friendly UI</h3>
+            <p>A clean, intuitive interface designed for everyone. No overwhelming menus, no steep learning curve. Just start building.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="landing-section section-alt" id="pricing-section">
+      <div class="section-container">
+        <div class="section-heading reveal-on-scroll">
+          <h2>Simple, Transparent Pricing</h2>
+          <p>Start free, upgrade when you're ready.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card reveal-on-scroll">
+            <div class="pricing-header">
+              <h3>Free</h3>
+              <div class="pricing-price"><span class="price-currency">&#8377;</span><span class="price-amount">0</span><span class="price-period">/ month</span></div>
+            </div>
+            <ul class="pricing-features-list">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Up to 3 projects
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Basic AI usage
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Tech Chat access
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Code editor
+              </li>
+            </ul>
+            <button class="btn btn-outline full-width" onclick="document.getElementById('buildBtn').click()">Get Started</button>
+          </div>
+          <div class="pricing-card pricing-card-highlight reveal-on-scroll">
+            <div class="pricing-badge">Popular</div>
+            <div class="pricing-header">
+              <h3>Pro</h3>
+              <div class="pricing-price"><span class="price-currency">&#8377;</span><span class="price-amount">299</span><span class="price-period">/ month</span></div>
+            </div>
+            <ul class="pricing-features-list">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Unlimited projects
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Faster AI responses
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Priority features
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Advanced file uploads
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Full chat history
+              </li>
+            </ul>
+            <button class="btn btn-primary full-width" onclick="showToast('Pro plan coming soon!')">Upgrade to Pro</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="landing-section" id="faq-section">
+      <div class="section-container">
+        <div class="section-heading reveal-on-scroll">
+          <h2>Frequently Asked Questions</h2>
+          <p>Quick answers to common questions about JEMROX AI.</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal-on-scroll">
+            <button class="faq-question" aria-expanded="false">
+              <span>What is JEMROX AI?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>JEMROX AI is an AI-powered website builder that lets you create real websites by simply describing what you want. It generates clean HTML, CSS, and JavaScript code through a chat-based interface.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-on-scroll">
+            <button class="faq-question" aria-expanded="false">
+              <span>Do I need coding knowledge?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Not at all. JEMROX AI is designed for beginners. You describe your website in plain English, and the AI builds it. If you do know code, you can edit it directly in the built-in code editor.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-on-scroll">
+            <button class="faq-question" aria-expanded="false">
+              <span>Is there a free plan?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. The Free plan gives you access to up to 3 projects, basic AI usage, Tech Chat, and the code editor at no cost.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-on-scroll">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can I upgrade later?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Absolutely. You can start on the Free plan and upgrade to Pro anytime. Your projects and chat history carry over seamlessly.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-on-scroll">
+            <button class="faq-question" aria-expanded="false">
+              <span>Is my project data safe?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <p>Your data is stored securely and is linked to your account. The architecture is designed with backend safety in mind, so your projects are ready for real server integration when the time comes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="landing-section section-cta">
+      <div class="section-container">
+        <div class="cta-block reveal-on-scroll">
+          <h2>Ready to build something amazing?</h2>
+          <p>Join JEMROX AI today and create your first website in minutes.</p>
+          <button class="btn btn-primary btn-lg" onclick="document.getElementById('buildBtn').click()">Start Building Now</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L26 8V20L14 26L2 20V8L14 2Z" stroke="#00D4FF" stroke-width="2" fill="none"/>
+            <circle cx="14" cy="14" r="4" fill="#00D4FF"/>
+          </svg>
+          <span>JEMROX AI</span>
+        </div>
+        <p class="footer-text">Built for builders. Powered by AI.</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeAuthBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- Sign Up Tab -->
+      <div id="signUpTab" class="auth-tab-content">
+        <h2>Create your account</h2>
+        <form id="signUpForm">
+          <div class="form-group">
+            <label for="signUpName">Full Name</label>
+            <input type="text" id="signUpName" required placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label for="signUpEmail">Email</label>
+            <input type="email" id="signUpEmail" required placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="signUpPassword">Password</label>
+            <input type="password" id="signUpPassword" required placeholder="Enter password" />
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Create Account</button>
+        </form>
+        <div class="auth-divider"><span>or</span></div>
+        <button id="googleSignUpBtn" class="btn btn-google full-width">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="currentColor"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="currentColor"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="currentColor"/>
+          </svg>
+          Continue with Google
+        </button>
+        <p class="auth-toggle">Already have an account? <button type="button" id="switchToSignIn" class="link-btn">Sign in</button></p>
+      </div>
+
+      <!-- Sign In Tab -->
+      <div id="signInTab" class="auth-tab-content hidden">
+        <h2>Sign in to your account</h2>
+        <form id="signInForm">
+          <div class="form-group">
+            <label for="signInEmail">Email</label>
+            <input type="email" id="signInEmail" required placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="signInPassword">Password</label>
+            <input type="password" id="signInPassword" required placeholder="Enter password" />
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Sign In</button>
+        </form>
+        <div class="auth-divider"><span>or</span></div>
+        <button id="googleSignInBtn" class="btn btn-google full-width">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="currentColor"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="currentColor"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="currentColor"/>
+          </svg>
+          Continue with Google
+        </button>
+        <p class="auth-toggle">Don't have an account? <button type="button" id="switchToSignUp" class="link-btn">Sign up</button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="appPage" class="app-page hidden">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <img src="logo.svg" class="app-logo-img" alt="JEMROX AI Logo">
+        <h1 class="app-logo">JEMROX AI</h1>
+      </div>
+      <div class="header-right">
+        <button id="previewToggleBtn" class="icon-btn" title="Toggle preview panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+        <div class="header-theme-toggles">
+          <button id="lightModeBtn" class="icon-btn theme-btn" title="Light mode" onclick="setTheme('light')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </button>
+          <button id="darkModeBtn" class="icon-btn theme-btn active" title="Dark mode" onclick="setTheme('dark')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+        </div>
+        <button id="profileBtn" class="profile-button">
+          <div class="profile-avatar" id="profileAvatar">U</div>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div id="profileMenu" class="profile-menu hidden">
+          <div class="profile-menu-header">
+            <h3 id="userName">User</h3>
+            <p id="userEmail">user@example.com</p>
+          </div>
+          <div class="profile-menu-divider"></div>
+          <button id="settingsBtn" class="profile-menu-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Settings
+          </button>
+          <div class="profile-menu-divider"></div>
+          <button id="logoutBtn" class="profile-menu-item logout">Logout</button>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="settings-modal hidden">
+          <div class="settings-modal-content">
+            <div class="settings-header">
+              <h2>Settings</h2>
+              <button id="closeSettingsBtn" class="modal-close-sm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+ 
+            <div class="settings-section">
+              <h3>Visibility</h3>
+              <button id="hideAllProjectsBtn" class="settings-action-btn">Hide All Projects</button>
+              <button id="hideAllChatsBtn" class="settings-action-btn">Hide All Chats</button>
+              <button id="unhideAllBtn" class="settings-action-btn secondary">Show All Hidden Items</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+      <!-- Sidebar toggle button (starting mein hidden rahega) -->
+<button id="menuIcon" class="menu-icon hidden">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</button>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <!-- Mode Buttons -->
+          <div class="mode-buttons">
+            <button class="mode-btn active" data-mode="build">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M3 12h18M12 3v18"/>
+              </svg>
+              Build Website
+            </button>
+            <button class="mode-btn" data-mode="tech">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              AI Assistant
+            </button>
+          </div>
+          
+
+          <!-- Projects Section -->
+          <div class="sidebar-section" style="display: none;">
+            <div class="section-header-side">
+              <h3 class="sidebar-section-title">Projects</h3>
+            </div>
+            <div id="projectsList" class="projects-list">
+              <p class="empty-state hidden">No projects yet</p>
+            </div>
+          </div>
+
+          <!-- Chat History Section -->
+          <div class="sidebar-section">
+            <div class="section-header-side">
+              <h3 class="sidebar-section-title">Chat History</h3>
+              <button id="newChatBtn" class="new-chat-btn" title="Start a new chat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+              </button>
+            </div>
+            <div id="chatHistory" class="chat-history">
+              <p class="empty-state">No chats yet</p>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+          <!-- Main Content -->
+       <main class="editor">
+       <div class="editor-content" id="editorContent">
+         <h2>Welcome to JEMROX AI</h2>
+         <p class="editor-subtitle">Start creating by describing your website</p>
+       </div>
+
+       <div id="chatContainer" class="chat-container hidden">
+       <div id="chatMessages" class="chat-messages-app"></div>
+       </div>
+
+       <div class="input-area">
+       <div class="input-welcome">Welcome to JEMROX AI</div>
+
+      <div id="attachmentsContainer" class="attachments-container hidden">
+      <div class="attachments-list" id="attachmentsList"></div>
+      </div>
+
+    <!-- Sahi Form Setup -->
+    <form class="input-wrapper" onsubmit="handleSendMessage(event); return false;">
+      
+      <button type="button" id="addBtn" class="add-btn" title="Add content">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+      </button>
+
+      <div id="uploadMenu" class="upload-menu hidden">
+        <button type="button" class="upload-option" data-type="image">Image</button>
+        <button type="button" class="upload-option" data-type="video">Video</button>
+        <button type="button" class="upload-option" data-type="file">File</button>
+        <button type="button" class="upload-option" data-type="document">Document</button>
+      </div>
+
+      <input type="text" id="mainInput" class="main-input" placeholder="Ask anything..." autocomplete="off">
+
+      <button type="button" id="codeEditorBtn" class="code-editor-btn" title="Code Editor">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+        </svg>
+      </button>
+
+      <button type="submit" id="sendBtn" class="send-btn" title="Send message">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </form>
+    </div>
+    </main>
+
+
+      <!-- Code Editor Side Panel -->
+      <aside id="codeEditorPanel" class="code-editor-panel hidden">
+        <div class="code-editor-container">
+          <div class="code-editor-header">
+            <div class="code-editor-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+              </svg>
+              <span>Code</span>
+            </div>
+            <div class="code-editor-view-toggles">
+              <button id="codeViewBtn" class="code-view-toggle active" title="Code Editor">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                </svg>
+              </button>
+              <button id="previewViewBtn" class="code-view-toggle" title="Live Preview">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="code-editor-controls">
+              <button id="downloadProjectBtn" class="icon-btn-sm" title="Download Project (.zip)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </button>
+              <button id="copyCodeBtn" class="icon-btn-sm" title="Copy Code">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                </svg>
+              </button>
+              <button id="closeCodePanelBtn" class="icon-btn-sm" title="Close Panel">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="code-editor-main" id="codeEditorMain">
+            <!-- Code View -->
+            <div class="code-editor-view active" id="codeView">
+              <!-- File Explorer Sidebar -->
+              <div class="code-editor-sidebar">
+                <div class="code-sidebar-header"><h4>Files</h4></div>
+                <div class="sidebar-actions">
+                  <button id="addFileBtn" class="sidebar-action-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+                    </svg>
+                    New File
+                  </button>
+                  <button id="addFolderBtn" class="sidebar-action-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>
+                    </svg>
+                    New Folder
+                  </button>
+                </div>
+                <div id="codeEditorFilesList" class="code-editor-files-list"></div>
+              </div>
+              <!-- Editor Content -->
+              <div class="code-editor-editor">
+                <div class="code-editor-file-header">
+                  <span id="currentFileName">No file selected</span>
+                </div>
+                <div id="codeEditorContent" class="code-editor-content">
+                  <div class="code-editor-wrapper">
+                    <pre id="codeEditorHighlight" class="code-editor-highlight"><code id="highlightedCode"></code></pre>
+                    <textarea id="codeEditorTextarea" class="code-editor-textarea" placeholder="// Start coding here..." spellcheck="false"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Preview View -->
+            <div class="code-editor-view" id="previewView">
+              <div class="code-preview-placeholder">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                <p>Live preview will appear here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Preview Panel -->
+      <aside class="preview-panel" id="previewPanel">
+        <div class="preview-header">
+          <h3>Preview</h3>
+          <div class="preview-controls">
+            <button id="closePreviewBtn" class="icon-btn-sm" title="Close preview">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+            <div class="device-selector">
+              <button class="device-btn active" data-device="mobile">Mobile</button>
+              <button class="device-btn" data-device="tablet">Tablet</button>
+              <button class="device-btn" data-device="desktop">Desktop</button>
+            </div>
+            <button id="fullscreenBtn" class="icon-btn-sm" title="Fullscreen">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="preview-container" id="previewContainer">
+          <div class="preview-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <p>Your website preview will appear here</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Fullscreen Preview Modal -->
+  <div id="fullscreenModal" class="fullscreen-modal hidden">
+    <div class="fullscreen-header">
+      <h3>Full Screen Preview</h3>
+      <button id="closeFullscreen" class="icon-btn-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div id="fullscreenPreview" class="fullscreen-preview"></div>
+  </div>
+
+  <!-- Mode Selection Modal -->
+  <div id="modeSelectionModal" class="mode-selection-modal hidden">
+    <div class="mode-selection-content">
+      <h2>Start New Chat</h2>
+      <p class="mode-selection-subtitle">Choose what you'd like to do</p>
+      <div class="mode-selection-buttons">
+        <button class="mode-selection-btn" data-mode="build">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M3 12h18M12 3v18"/>
+          </svg>
+          <span>Build Website</span>
+          <p>Create a new website with AI</p>
+        </button>
+        <button class="mode-selection-btn" data-mode="tech">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Ask Tech Question</span>
+          <p>Chat about technology</p>
+        </button>
+      </div>
+      <button id="closeModeModal" class="modal-close-sm">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
