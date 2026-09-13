@@ -145,6 +145,9 @@ async def login(data: LoginRequest, response: Response):
 # ==============================
 # Chat/AI Endpoint
 # ==============================
+# ==============================
+# Chat/AI Endpoint (Fixed History Sync Bug)
+# ==============================
 @app.post("/chat/send")
 async def save_and_get_ai_chat(data: ChatRequest, response: Response):
     response.headers["Access-Control-Allow-Origin"] = "*"
@@ -153,6 +156,7 @@ async def save_and_get_ai_chat(data: ChatRequest, response: Response):
     cursor = conn.cursor()
     
     try:
+        # 1. Past history message arrays build karein context fetch ke liye
         cursor.execute(
             "SELECT content, mode FROM messages WHERE chat_id = %s ORDER BY id DESC LIMIT 5;", 
             (data.chat_id,)
@@ -164,27 +168,32 @@ async def save_and_get_ai_chat(data: ChatRequest, response: Response):
             role = "assistant" if r["mode"] == "ai" else "user"
             history.append({"role": role, "content": r["content"]})
 
+        # 2. User ka naya message database mein save karein
         cursor.execute(
             "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (%s, %s, %s, %s);",
             (data.user_id, data.chat_id, data.content, data.mode)
         )
         conn.commit()
 
+        # 3. Groq AI logic call trigger karein safety fallbacks ke sath
         try:
             ai_reply = get_ai_response(data.content, mode=data.mode, history=history)
         except Exception as ai_err:
             print(f"AI Service Error: {ai_err}")
             ai_reply = "AI Service busy right now."
 
+        # 4. AI ka response bhi database mein usi same user_id ke sath save karein (🏆 Important Fix)
         cursor.execute(
             "INSERT INTO messages (user_id, chat_id, content, mode) VALUES (%s, %s, %s, %s);",
-            (0, data.chat_id, ai_reply, "ai")
+            (data.user_id, data.chat_id, ai_reply, "ai")
         )
         conn.commit()
 
+        # Return both elements payload fields safely
         return {
             "status": "success", 
-            "ai_response": ai_reply 
+            "ai_response": ai_reply,
+            "user_message": data.content
         }
 
     except Exception as e:
