@@ -1286,32 +1286,53 @@ function applyHighlight(code, language) {
   return highlighted;
 }
 
-// ===== Chat History =====
+// ===== Chat History Bubble Normalizer Fix =====
 function loadChatMessages(chat) {
   var chatMessages = document.getElementById('chatMessages');
+  if (!chatMessages) return;
   chatMessages.innerHTML = '';
   if (!chat || !chat.messages) return;
 
   chat.messages.forEach(function (msg) {
-    var div = document.createElement('div');
-    div.className = 'chat-message ' + msg.sender;
-    var html = '<div class="message-content ' + msg.sender + '">' + (msg.sender === 'ai' ? formatMessage(msg.text) : escapeHtml(msg.text));
-    if (msg.attachedFiles && msg.attachedFiles.length > 0) {
-      html += '<div class="attached-files-display">';
-      msg.attachedFiles.forEach(function (file) {
-        if (file.type === 'image') html += '<img src="' + file.dataUrl + '" alt="' + file.name + '" class="message-attachment-image">';
-        else html += '<div class="message-attachment-file">' + file.name + '</div>';
-      });
-      html += '</div>';
+    //  Dynamic Mapping: check matching keys from both database response and frontend memory objects
+    var isAI = false;
+    
+    // Check key patterns dynamically to isolate user from ai instances
+    if (msg.sender === 'ai' || msg.mode === 'ai' || msg.role === 'assistant' || msg.user_id === 0) {
+        isAI = true;
     }
-    html += '</div>';
-    div.innerHTML = html;
+
+    var senderClass = isAI ? 'ai' : 'user';
+    var textMessage = msg.text || msg.content || '';
+
+    var div = document.createElement('div');
+    div.className = 'chat-message ' + senderClass;
+    
+    // Render formatMessage function context strictly for AI only, escape HTML for user inputs safely
+    var messageHtml = '<div class="message-content ' + senderClass + '">' + 
+                       (isAI ? formatMessage(textMessage) : escapeHtml(textMessage));
+               
+    if (msg.attachedFiles && msg.attachedFiles.length > 0) {
+      messageHtml += '<div class="attached-files-display">';
+      msg.attachedFiles.forEach(function (file) {
+        if (file.type === 'image') {
+          messageHtml += '<img src="' + file.dataUrl + '" alt="' + file.name + '" class="message-attachment-image">';
+        } else {
+          messageHtml += '<div class="message-attachment-file">' + file.name + '</div>';
+        }
+      });
+      messageHtml += '</div>';
+    }
+    
+    messageHtml += '</div>';
+    div.innerHTML = messageHtml;
     chatMessages.appendChild(div);
   });
 
   autoScrollToLatestMessage();
   updateChatPreview();
 }
+
 
 function updateChatHistory(chatType) {
   var historyEl = document.getElementById('chatHistory');
