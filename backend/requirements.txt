@@ -1,8 +1,8 @@
-fastapi
-uvicorn
-pydantic
-passlib[bcrypt]
-python-jose[cryptography]
-groq
-psycopg2-binary
-python-dotenv
+fastapi==0.110.0
+uvicorn==0.28.0
+pydantic==2.6.4
+python-jose[cryptography]==3.3.0
+argon2-cffi==23.1.0
+groq==0.4.2
+psycopg2-binary==2.9.9
+python-dotenv==1.0.1
