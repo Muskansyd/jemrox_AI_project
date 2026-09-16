@@ -3,8 +3,8 @@ from datetime import datetime, timedelta, timezone
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import jwt
-from argon2 import PasswordHasher # 🏆 Direct Official Argon2 Hasher
+from jose import jwt  # 🏆 Standard stable jose engine import
+from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from database import get_connection
 from ai_service import get_ai_response
@@ -26,7 +26,6 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY") or "jemrox_super_secret_key_change_this
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
-# Initialize the official Argon2 engine instance
 ph = PasswordHasher()
 
 class RegisterRequest(BaseModel):
@@ -45,15 +44,13 @@ class ChatRequest(BaseModel):
     user_id: int
 
 # ==============================
-# Hashing Helpers (Pure Raw String Argon2 Fix)
+# Hashing Helpers (Pure Argon2)
 # ==============================
 def hash_password(password: str) -> str:
-    # Kisi bytes conversion ki zaroorat nahi, Argon2 direct strings handle karta hai!
     return ph.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     try:
-        # Direct raw comparison mapping filters
         return ph.verify(hashed_password, plain_password)
     except VerifyMismatchError:
         return False
@@ -63,7 +60,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def create_token(data: dict):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": int(expire.timestamp())})
+    to_encode.update({"exp": expire}) # jose architecture formats timezone fields automatically
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ==============================
