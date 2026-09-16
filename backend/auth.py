@@ -51,13 +51,17 @@ class ChatRequest(BaseModel):
     user_id: int
 
 # ==============================
-# Helper Functions
+# Helper Functions (Bcrypt 72-Byte Truncate Fix)
 # ==============================
 def hash_password(password: str):
-    return pwd_context.hash(password)
+    # Safe explicit conversion to clean string formatting bytes parameters limit
+    safe_pwd = str(password)[:72]
+    return pwd_context.hash(safe_pwd)
 
 def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+    # Safe explicit conversion verification criteria parameters limit
+    safe_plain = str(plain_password)[:72]
+    return pwd_context.verify(safe_plain, hashed_password)
 
 def create_token(data: dict):
     to_encode = data.copy()
