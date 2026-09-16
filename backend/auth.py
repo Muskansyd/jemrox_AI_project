@@ -51,17 +51,18 @@ class ChatRequest(BaseModel):
     user_id: int
 
 # ==============================
-# Helper Functions (Bcrypt 72-Byte Truncate Fix)
+# Helper Functions (Strict Byte Alignment Fix)
 # ==============================
 def hash_password(password: str):
-    # Safe explicit conversion to clean string formatting bytes parameters limit
-    safe_pwd = str(password)[:72]
-    return pwd_context.hash(safe_pwd)
+    # Slice the raw string to maximum 71 characters to securely stay within 72 bytes constraint limits
+    safe_str = str(password)[:71]
+    return pwd_context.hash(safe_str)
 
 def verify_password(plain_password, hashed_password):
-    # Safe explicit conversion verification criteria parameters limit
-    safe_plain = str(plain_password)[:72]
+    # Slice the input raw login string to maximum 71 characters safely
+    safe_plain = str(plain_password)[:71]
     return pwd_context.verify(safe_plain, hashed_password)
+
 
 def create_token(data: dict):
     to_encode = data.copy()
