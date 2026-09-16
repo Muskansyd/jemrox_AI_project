@@ -939,7 +939,7 @@ async function sendChatMessage(message, attachedFiles, chatType) {
                         const cleanJson = text.substring(start, end);
                         const webCode = JSON.parse(cleanJson);
 
-                        // 🔥 FIX: Current chat ID se project dhoondo taaki galat project mein save na ho
+                        //  FIX: Current chat ID se project dhoondo taaki galat project mein save na ho
     const currentId = appState.currentTechChatId || appState.activeBuildProjectId;
     let project = appState.projects.find(p => String(p.id) === String(currentId));
 
@@ -1336,25 +1336,24 @@ function loadChatMessages(chat) {
 
 function updateChatHistory(chatType) {
   var historyEl = document.getElementById('chatHistory');
-  if (!historyEl) return; // Agar dabba nahi mila toh stop
+  if (!historyEl) return; // 
 
   var modeToDisplay = chatType || appState.currentMode;
 
   var items, itemType; 
   if (modeToDisplay === 'build') {
     items = appState.projects || [];
-    itemType = 'project'; // Mode ke hisaab se type set kiya
+    itemType = 'project'; 
   } else {
     items = appState.techChats || [];
-    itemType = 'chat';    // Mode ke hisaab se type set kiya
-  }
+    itemType = 'chat';    
   // ----------------------
 
   if (!items || items.length === 0) {
     historyEl.innerHTML = '<p class="empty-state">No ' + (modeToDisplay === 'build' ? 'projects' : 'chats') + ' yet</p>';
     return;
   }
-
+  }
     historyEl.innerHTML = items.map(function (item) {
     // --- SMART TITLE LOGIC ---
     var title = 'New ' + itemType;
