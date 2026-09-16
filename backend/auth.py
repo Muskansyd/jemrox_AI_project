@@ -29,8 +29,7 @@ SECRET_KEY = "jemrox_super_secret_key_change_this"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours validity
 
-# Cryptographic Context using Argon2
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # ==============================
 # Pydantic Models (Data Validation)
