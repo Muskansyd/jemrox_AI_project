@@ -1,24 +1,12 @@
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from dotenv import load_dotenv
 
-# Try loading from local path, but allow it to gracefully fallback if running on cloud servers
-env_path = os.path.join(os.path.dirname(__file__), ".env")
-if os.path.exists(env_path):
-    load_dotenv(dotenv_path=env_path)
-
-# Fetch the database connection string from environment context safely
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
-    # Establish a clean, runtime-safe production link to the remote PostgreSQL database
-    # Fix: explicitly handling connection timeouts parameters to clear serverless 500 crash loops
-    conn = psycopg2.connect(
-        DATABASE_URL, 
-        cursor_factory=RealDictCursor,
-        connect_timeout=10
-    )
+    # RealDictCursor lagana compulsory hai taaki PostgreSQL columns dictionary array keys support karein
+    conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
     return conn
 
 def init_db():
