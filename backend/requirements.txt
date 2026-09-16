@@ -1,11 +1,8 @@
 fastapi
 uvicorn
 pydantic
-passlib
-bcrypt
-PyJWT
+passlib[bcrypt]
+python-jose[cryptography]
 groq
 psycopg2-binary
 python-dotenv
-argon2-cffi==23.1.0
-passlib[argon2]==1.7.4
