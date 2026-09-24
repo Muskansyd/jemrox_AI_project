@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from jose import jwt  # 🏆 Standard stable jose engine import
+from jose import jwt  
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from database import get_connection

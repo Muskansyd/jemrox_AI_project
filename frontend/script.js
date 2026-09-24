@@ -1994,7 +1994,7 @@ async function sendToBackend(description) {
     content: String(description || ""),
     chat_id: String(appState.activeBuildProjectId || Date.now()),
     mode: "build",
-    // user_id ko hamesha integer rakho (422 fix)
+   
     user_id: appState.currentUser && appState.currentUser.id ? parseInt(appState.currentUser.id) : 0 
   };
 
