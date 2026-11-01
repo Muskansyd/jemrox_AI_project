@@ -501,44 +501,52 @@
        <div id="chatMessages" class="chat-messages-app"></div>
        </div>
 
-       <div class="input-area">
+           <!-- 🌌 NEXT-GEN INTERACTION CONSOLE (COMPLETELY FIXED) -->
+    <div class="input-area">
        <div class="input-welcome">Welcome to JEMROX AI</div>
 
-      <div id="attachmentsContainer" class="attachments-container hidden">
-      <div class="attachments-list" id="attachmentsList"></div>
-      </div>
+       <div id="attachmentsContainer" class="attachments-container hidden">
+         <div class="attachments-list" id="attachmentsList"></div>
+       </div>
 
-    <!-- Sahi Form Setup -->
-    <form class="input-wrapper" onsubmit="handleSendMessage(event); return false;">
+       <!-- Secure Standard Form Setup with proper Identification Elements -->
+       <form class="input-wrapper" name="chatConsoleForm" id="chatConsoleForm" onsubmit="handleSendMessage(event); return false;">
       
-      <button type="button" id="addBtn" class="add-btn" title="Add content">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M12 5v14M5 12h14"/>
-        </svg>
-      </button>
+          <!-- 1. Add Media trigger node -->
+          <button type="button" id="addBtn" name="addAttachmentBtn" class="add-btn" title="Add content">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+          </button>
 
-      <div id="uploadMenu" class="upload-menu hidden">
-        <button type="button" class="upload-option" data-type="image">Image</button>
-        <button type="button" class="upload-option" data-type="video">Video</button>
-        <button type="button" class="upload-option" data-type="file">File</button>
-        <button type="button" class="upload-option" data-type="document">Document</button>
-      </div>
+          <!-- 2. Dynamic multi-upload contextual menus -->
+          <div id="uploadMenu" name="uploadOptionMenu" class="upload-menu hidden">
+            <button type="button" id="uploadImgBtn" name="uploadImage" class="upload-option" data-type="image">Image</button>
+            <button type="button" id="uploadVidBtn" name="uploadVideo" class="upload-option" data-type="video">Video</button>
+            <button type="button" id="uploadFileBtn" name="uploadFile" class="upload-option" data-type="file">File</button>
+            <button type="button" id="uploadDocBtn" name="uploadDocument" class="upload-option" data-type="document">Document</button>
+          </div>
 
-      <input type="text" id="mainInput" class="main-input" placeholder="Ask anything..." autocomplete="off">
+          <!-- 3. Primary prompt interface entry field -->
+          <input type="text" id="mainInput" name="userPromptInput" class="main-input" placeholder="Ask anything..." autocomplete="off">
 
-      <button type="button" id="codeEditorBtn" class="code-editor-btn" title="Code Editor">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-        </svg>
-      </button>
+          <!-- 4. Structural compiler sidebar panel trigger -->
+          <button type="button" id="codeEditorBtn" name="toggleCodeEditorBtn" class="code-editor-btn" title="Code Editor">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </button>
 
-      <button type="submit" id="sendBtn" class="send-btn" title="Send message">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-      </button>
-    </form>
+          <!-- 5. Submit transmission pipeline connector -->
+          <button type="submit" id="sendBtn" name="submitMessageBtn" class="send-btn" title="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+          
+       </form>
     </div>
+
     </main>
 
 
