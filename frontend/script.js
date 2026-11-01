@@ -1621,78 +1621,51 @@ function openFileInEditor(fileName) {
   }
 }
 
-//website preview rendering function
 
 //website preview rendering function
 
-// 🧽 ADVANCED STRIP & PARSE UTILITY
-function cleanJsonString(str) {
-  let clean = str.trim();
-  
-  // 1. Agar AI ne markdown code blocks (```json ... ```) lagaye hain toh unhe saaf karein
-  if (clean.startsWith("```json")) clean = clean.substring(7);
-  else if (clean.startsWith("```")) clean = clean.substring(3);
-  if (clean.endsWith("```")) clean = clean.slice(0, -3);
-  
-  clean = clean.trim();
-
-  // 2. ⚡ CRITICAL BUG FIX: Replace literal '\n' text with real system line breaks
-  // Yeh line saare collapsed CSS aur JS lines ko alag-alag karke parse karegi
-  clean = clean.replace(/\\n/g, '\n');
-
-  // 3. Extract purely the JSON brackets if there is trailing conversational filler text
-  const start = clean.indexOf('{');
-  const end = clean.lastIndexOf('}') + 1;
-  if (start !== -1 && end > 0) {
-    clean = clean.substring(start, end);
-  }
-  
-  return clean.trim();
-}
-
-// 🏎️ THE COMPILER ENGINE: LIVE IFRAME SANDBOX RENDERING
 function renderWebsite(html, css, js) {
+  // ⚡ SELECTION STRATEGY: Target both of your authentic container panels from index.html
   const targets = [
     document.getElementById('previewView'),
-    document.getElementById('previewContainer'),
-    document.getElementById('preview-sandbox')
-  ].filter(Boolean); // Filter out null targets safely
+    document.getElementById('previewContainer')
+  ];
 
-  // Image tag absolute path sanitizer patch
+  // 🧽 IMAGE PATH CLEANER: Automatically strips accidental backslashes or double-quotes from generated image tags
   let cleanedHtml = html || '';
   cleanedHtml = cleanedHtml.replace(/src=["']?\\?["']?(https?:\/\/[^"'\s>\\]+)\\?["']?/g, 'src="$1"');
 
   targets.forEach(function (container) {
     if (!container) return;
 
-    let iframe;
-    if (container.tagName.toLowerCase() === 'iframe') {
-      iframe = container;
-    } else {
-      container.innerHTML = '';
-      iframe = document.createElement('iframe');
-      iframe.style.width = "100%";
-      iframe.style.height = "100%";
-      iframe.style.border = "none";
-      iframe.style.background = "#0b0f19"; // Matches your beautiful dark aesthetic workspace
-      iframe.title = "Jemrox Active Sandboxed Preview Engine";
-      container.appendChild(iframe);
-    }
+    // 1. Wipe out existing placeholders cleanly
+    container.innerHTML = '';
 
-    //  Staging full source document package
+    // 2. Spawn a fresh, completely sandboxed isolated iframe context
+    const iframe = document.createElement('iframe');
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+    iframe.style.background = "white";
+    iframe.title = "Jemrox Active Sandboxed Preview Engine";
+
+    // 3. Mount the initialized iframe context into your active HTML Container layout
+    container.appendChild(iframe);
+
+    // 4. Staging compiled source string context (Fixed Backslashes and Braces Mismatch)
     const dynamicSourceDoc = 
         '<!DOCTYPE html>\n' +
         '<html lang="en">\n' +
         '<head>\n' +
         '    <meta charset="UTF-8">\n' +
         '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-        '    <!-- Tailwind CSS Script -->\n' +
+        '    <!-- Standalone Tailwind CSS Play Engine -->\n' +
         '    <script src="https://tailwindcss.com"><\/script>\n' +
         '    <style>\n' +
         '        ' + (css || '') + '\n' +
         '    </style>\n' +
         '</head>\n' +
-        '<body class="bg-[#0b0f19] min-h-screen text-gray-100 p-6 flex flex-col items-center justify-start overflow-y-auto">\n' +
+        '<body class="bg-[#0b0f19] min-h-screen text-gray-100 flex items-center justify-center p-4">\n' +
         '    ' + cleanedHtml + '\n' +
         '    <script>\n' +
         '        try {\n' +
@@ -1704,6 +1677,7 @@ function renderWebsite(html, css, js) {
         '</body>\n' +
         '</html>';
 
+    // 5. Securely flush and execute application stream onto the iframe DOM frame
     iframe.srcdoc = dynamicSourceDoc;
   });
 }
