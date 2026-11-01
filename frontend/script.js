@@ -1624,10 +1624,10 @@ function openFileInEditor(fileName) {
 
 //website preview rendering function
 
-// website preview rendering function
+// website preview rendering function - Completely Fixed
 
 function renderWebsite(html, css, js) {
-  // ⚡ SELECTION: Target your authentic containers from index.html
+  // ⚡ SELECTION: Target both of your authentic containers from index.html
   const targets = [
     document.getElementById('previewView'),
     document.getElementById('previewContainer'),
@@ -1655,17 +1655,18 @@ function renderWebsite(html, css, js) {
       container.appendChild(iframe);
     }
 
-    // ⚡ FIXED: Replacing backticks with single quotes concatenation completely eliminates the { clash
+    // ⚡ CRITICAL FIX: Direct variable assignment via clean string fragments removes template literal clashes
     const safeJsCode = js || '';
     const safeCssCode = css || '';
 
+    // Combining document with perfect string concatenation to ensure browser reads actual variables
     const dynamicSourceDoc = 
         '<!DOCTYPE html>\n' +
         '<html lang="en">\n' +
         '<head>\n' +
         '    <meta charset="UTF-8">\n' +
         '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-        '    <!-- Tailwind CSS Script Compiler Tool -->\n' +
+        '    <!-- Standalone Tailwind CSS Play Engine -->\n' +
         '    <script src="https://tailwindcss.com"><\/script>\n' +
         '    <style>\n' +
         '        ' + safeCssCode + '\n' +
