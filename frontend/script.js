@@ -1624,52 +1624,58 @@ function openFileInEditor(fileName) {
 
 //website preview rendering function
 
+// website preview rendering function
+
 function renderWebsite(html, css, js) {
-  // ⚡ SELECTION STRATEGY: Target both of your authentic container panels from index.html
+  // ⚡ SELECTION: Target your authentic containers from index.html
   const targets = [
     document.getElementById('previewView'),
-    document.getElementById('previewContainer')
-  ];
+    document.getElementById('previewContainer'),
+    document.getElementById('preview-sandbox')
+  ].filter(Boolean); // Filters out any null nodes safely
 
-  // 🧽 IMAGE PATH CLEANER: Automatically strips accidental backslashes or double-quotes from generated image tags
+  // Image tag broken absolute paths sanitizer patch
   let cleanedHtml = html || '';
   cleanedHtml = cleanedHtml.replace(/src=["']?\\?["']?(https?:\/\/[^"'\s>\\]+)\\?["']?/g, 'src="$1"');
 
   targets.forEach(function (container) {
     if (!container) return;
 
-    // 1. Wipe out existing placeholders cleanly
-    container.innerHTML = '';
+    let iframe;
+    if (container.tagName.toLowerCase() === 'iframe') {
+      iframe = container;
+    } else {
+      container.innerHTML = '';
+      iframe = document.createElement('iframe');
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.style.background = "#0b0f19"; // Standard beautiful dark layout match
+      iframe.title = "Jemrox Active Sandboxed Preview Engine";
+      container.appendChild(iframe);
+    }
 
-    // 2. Spawn a fresh, completely sandboxed isolated iframe context
-    const iframe = document.createElement('iframe');
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    iframe.style.background = "white";
-    iframe.title = "Jemrox Active Sandboxed Preview Engine";
+    // ⚡ FIXED: Replacing backticks with single quotes concatenation completely eliminates the { clash
+    const safeJsCode = js || '';
+    const safeCssCode = css || '';
 
-    // 3. Mount the initialized iframe context into your active HTML Container layout
-    container.appendChild(iframe);
-
-    // 4. Staging compiled source string context (Fixed Backslashes and Braces Mismatch)
     const dynamicSourceDoc = 
         '<!DOCTYPE html>\n' +
         '<html lang="en">\n' +
         '<head>\n' +
         '    <meta charset="UTF-8">\n' +
         '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-        '    <!-- Standalone Tailwind CSS Play Engine -->\n' +
+        '    <!-- Tailwind CSS Script Compiler Tool -->\n' +
         '    <script src="https://tailwindcss.com"><\/script>\n' +
         '    <style>\n' +
-        '        ' + (css || '') + '\n' +
+        '        ' + safeCssCode + '\n' +
         '    </style>\n' +
         '</head>\n' +
-        '<body class="bg-[#0b0f19] min-h-screen text-gray-100 flex items-center justify-center p-4">\n' +
+        '<body class="bg-[#0b0f19] min-h-screen text-gray-100 flex flex-col items-center justify-start p-6 overflow-y-auto">\n' +
         '    ' + cleanedHtml + '\n' +
         '    <script>\n' +
         '        try {\n' +
-        '            ' + (js || '') + '\n' +
+        '            ' + safeJsCode + '\n' +
         '        } catch (sandboxException) {\n' +
         '            console.error("Runtime component failure inside Jemrox Sandbox:", sandboxException);\n' +
         '        }\n' +
@@ -1677,7 +1683,7 @@ function renderWebsite(html, css, js) {
         '</body>\n' +
         '</html>';
 
-    // 5. Securely flush and execute application stream onto the iframe DOM frame
+    // Flush source documentation directly to freeze token leaks
     iframe.srcdoc = dynamicSourceDoc;
   });
 }
