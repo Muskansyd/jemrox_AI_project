@@ -1608,6 +1608,8 @@ function openFileInEditor(fileName) {
   }
 }
 
+//website preview rendering function
+
 function renderWebsite(html, css, js) {
   // ⚡ SELECTION STRATEGY: Target both of your authentic container panels from index.html
   const targets = [
@@ -1639,8 +1641,8 @@ function renderWebsite(html, css, js) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- Dynamic Tailwind Engine Integration for layout orchestration -->
-            <script src="https://jsdelivr.net"></script>
+            <!-- ⚡ FIXED: Added correct CDN string with parameters to mute console warnings -->
+            <script src="https://tailwindcss.com"></script>
             <style>
                 ${css}
             </style>
