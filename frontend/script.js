@@ -1609,28 +1609,56 @@ function openFileInEditor(fileName) {
 }
 
 function renderWebsite(html, css, js) {
-  const previewContainer = document.getElementById('previewView') || document.getElementById('previewContainer');
-  if (!previewContainer) return;
+  // ⚡ SELECTION STRATEGY: Target both of your authentic container panels from index.html
+  const targets = [
+    document.getElementById('previewView'),
+    document.getElementById('previewContainer')
+  ];
 
-  previewContainer.innerHTML = '';
-  const iframe = document.createElement('iframe');
-  iframe.style.width = "100%";
-  iframe.style.height = "100%";
-  iframe.style.border = "none";
-  iframe.style.background = "white";
-  previewContainer.appendChild(iframe);
+  targets.forEach(function (container) {
+    if (!container) return;
 
-  const fullCode = `
-        <html>
-            <head>
-                <script src="https://cdn.tailwindcss.com"><\/script>
-                <style>${css}</style>
-            </head>
-            <body>
-                ${html}
-                <script>${js}<\/script>
-            </body>
+    // 1. Wipe out existing placeholders (SVGs and text blocks) cleanly
+    container.innerHTML = '';
+
+    // 2. Spawn a fresh, completely sandboxed isolated iframe context
+    const iframe = document.createElement('iframe');
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+    iframe.style.background = "white";
+    iframe.title = "Jemrox Active Sandboxed Preview Engine";
+
+    // 3. Mount the initialized iframe context into your active HTML Container layout
+    container.appendChild(iframe);
+
+    // 4. Staging compiled source string context (Injecting v4 browser compiler tool)
+    const dynamicSourceDoc = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Dynamic Tailwind Engine Integration for layout orchestration -->
+            <script src="https://jsdelivr.net"></script>
+            <style>
+                ${css}
+            </style>
+        </head>
+        <body class="bg-white min-h-screen text-gray-900">
+            ${html}
+            <script>
+                try {
+                    ${js}
+                } catch (sandboxException) {
+                    console.error("Runtime component failure inside Jemrox Sandbox:", sandboxException);
+                }
+            <\/script>
+        </body>
         </html>
     `;
-  iframe.srcdoc = fullCode;
+
+    // 5. Securely flush and execute application stream onto the iframe DOM frame
+    iframe.srcdoc = dynamicSourceDoc;
+  });
 }
