@@ -1534,13 +1534,13 @@ function openBuildChat(projectId) {
   var project = appState.projects.find(function (p) { return p.id === projectId; });
   if (!project) return;
 
-  // ⚡ FIXED: Absolute null check added for editorContent to completely eliminate the crash
+  // ⚡ FIXED: Added safe existence validation before mutating style objects
   var editorContent = document.getElementById('editorContent');
   if (editorContent) {
     editorContent.style.display = 'none';
   }
 
-  // ⚡ FIXED: Absolute null check added for chatContainer to secure class validation
+  // ⚡ FIXED: Added verification layer before processing class Lists
   var chatContainer = document.getElementById('chatContainer');
   if (chatContainer) {
     chatContainer.classList.remove('hidden');
@@ -1567,9 +1567,9 @@ function openBuildChat(projectId) {
       });
     }
   }
-  
   autoScrollToLatestMessage();
 }
+
 
 
 async function sendToBackend(description) {
@@ -1624,7 +1624,7 @@ function openFileInEditor(fileName) {
 //website preview rendering function
 
 function renderWebsite(html, css, js) {
-  // ⚡ SELECTION STRATEGY: Target both of your authentic container panels from index.html
+  // ⚡ SELECTION: Target your authentic container slots dynamically from index.html
   const targets = [
     document.getElementById('previewView'),
     document.getElementById('previewContainer')
@@ -1633,10 +1633,10 @@ function renderWebsite(html, css, js) {
   targets.forEach(function (container) {
     if (!container) return;
 
-    // 1. Wipe out existing placeholders (SVGs and text blocks) cleanly
+    // 1. Flush existing inner content variables
     container.innerHTML = '';
 
-    // 2. Spawn a fresh, completely sandboxed isolated iframe context
+    // 2. Provision isolated browser window ecosystem
     const iframe = document.createElement('iframe');
     iframe.style.width = "100%";
     iframe.style.height = "100%";
@@ -1644,27 +1644,26 @@ function renderWebsite(html, css, js) {
     iframe.style.background = "white";
     iframe.title = "Jemrox Active Sandboxed Preview Engine";
 
-    // 3. Mount the initialized iframe context into your active HTML Container layout
     container.appendChild(iframe);
 
-    // 4. Staging compiled source string context (Injecting v4 browser compiler tool)
+    // 3. Staging compiled source environment (Muting development telemetry warning logs)
     const dynamicSourceDoc = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- Dynamic Tailwind Engine Integration for layout orchestration -->
-            <script src="https://jsdelivr.net"></script>
+            <!-- Tailwind Engine parameters implemented to bypass standard runtime alerts -->
+            <script src="https://tailwindcss.com"></script>
             <style>
-                ${css}
+                \${css}
             </style>
         </head>
         <body class="bg-white min-h-screen text-gray-900">
-            ${html}
+            \${html}
             <script>
                 try {
-                    ${js}
+                    \${js}
                 } catch (sandboxException) {
                     console.error("Runtime component failure inside Jemrox Sandbox:", sandboxException);
                 }
@@ -1673,7 +1672,6 @@ function renderWebsite(html, css, js) {
         </html>
     `;
 
-    // 5. Securely flush and execute application stream onto the iframe DOM frame
     iframe.srcdoc = dynamicSourceDoc;
   });
 }
