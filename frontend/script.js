@@ -1623,20 +1623,26 @@ function openFileInEditor(fileName) {
 
 //website preview rendering function
 
+//website preview rendering function
+
 function renderWebsite(html, css, js) {
-  // ⚡ SELECTION: Target your authentic container slots dynamically from index.html
+  // ⚡ SELECTION STRATEGY: Target both of your authentic container panels from index.html
   const targets = [
     document.getElementById('previewView'),
     document.getElementById('previewContainer')
   ];
 
+  // 🧽 IMAGE PATH CLEANER: Automatically strips accidental backslashes or double-quotes from generated image tags
+  let cleanedHtml = html || '';
+  cleanedHtml = cleanedHtml.replace(/src=["']?\\?["']?(https?:\/\/[^"'\s>\\]+)\\?["']?/g, 'src="$1"');
+
   targets.forEach(function (container) {
     if (!container) return;
 
-    // 1. Flush existing inner content variables
+    // 1. Wipe out existing placeholders cleanly
     container.innerHTML = '';
 
-    // 2. Provision isolated browser window ecosystem
+    // 2. Spawn a fresh, completely sandboxed isolated iframe context
     const iframe = document.createElement('iframe');
     iframe.style.width = "100%";
     iframe.style.height = "100%";
@@ -1644,34 +1650,35 @@ function renderWebsite(html, css, js) {
     iframe.style.background = "white";
     iframe.title = "Jemrox Active Sandboxed Preview Engine";
 
+    // 3. Mount the initialized iframe context into your active HTML Container layout
     container.appendChild(iframe);
 
-    // 3. Staging compiled source environment (Muting development telemetry warning logs)
-    const dynamicSourceDoc = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- Tailwind Engine parameters implemented to bypass standard runtime alerts -->
-            <script src="https://tailwindcss.com"></script>
-            <style>
-                \${css}
-            </style>
-        </head>
-        <body class="bg-white min-h-screen text-gray-900">
-            \${html}
-            <script>
-                try {
-                    \${js}
-                } catch (sandboxException) {
-                    console.error("Runtime component failure inside Jemrox Sandbox:", sandboxException);
-                }
-            <\/script>
-        </body>
-        </html>
-    `;
+    // 4. Staging compiled source string context (Fixed Backslashes and Braces Mismatch)
+    const dynamicSourceDoc = 
+        '<!DOCTYPE html>\n' +
+        '<html lang="en">\n' +
+        '<head>\n' +
+        '    <meta charset="UTF-8">\n' +
+        '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+        '    <!-- Standalone Tailwind CSS Play Engine -->\n' +
+        '    <script src="https://tailwindcss.com"><\/script>\n' +
+        '    <style>\n' +
+        '        ' + (css || '') + '\n' +
+        '    </style>\n' +
+        '</head>\n' +
+        '<body class="bg-[#0b0f19] min-h-screen text-gray-100 flex items-center justify-center p-4">\n' +
+        '    ' + cleanedHtml + '\n' +
+        '    <script>\n' +
+        '        try {\n' +
+        '            ' + (js || '') + '\n' +
+        '        } catch (sandboxException) {\n' +
+        '            console.error("Runtime component failure inside Jemrox Sandbox:", sandboxException);\n' +
+        '        }\n' +
+        '    <\/script>\n' +
+        '</body>\n' +
+        '</html>';
 
+    // 5. Securely flush and execute application stream onto the iframe DOM frame
     iframe.srcdoc = dynamicSourceDoc;
   });
 }
