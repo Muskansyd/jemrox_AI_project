@@ -1527,37 +1527,50 @@ function openBuildChat(projectId) {
   var chatMessages = document.getElementById('chatMessages');
 
   if (!projectId) {
-    chatMessages.innerHTML = '';
+    if (chatMessages) chatMessages.innerHTML = '';
     return;
   }
 
   var project = appState.projects.find(function (p) { return p.id === projectId; });
   if (!project) return;
 
-  document.getElementById('editorContent').style.display = 'none';
-  document.getElementById('chatContainer').classList.remove('hidden');
-
-  chatMessages.innerHTML = '';
-  if (project.messages && project.messages.length > 0) {
-    project.messages.forEach(function (msg) {
-      var div = document.createElement('div');
-      div.className = 'chat-message ' + msg.sender;
-      var html = '<div class="message-content ' + msg.sender + '">' + (msg.sender === 'ai' ? formatMessage(msg.text) : escapeHtml(msg.text));
-      if (msg.attachedFiles && msg.attachedFiles.length > 0) {
-        html += '<div class="attached-files-display">';
-        msg.attachedFiles.forEach(function (file) {
-          if (file.type === 'image') html += '<img src="' + file.dataUrl + '" alt="' + file.name + '" class="message-attachment-image">';
-          else html += '<div class="message-attachment-file">' + file.name + '</div>';
-        });
-        html += '</div>';
-      }
-      html += '</div>';
-      div.innerHTML = html;
-      chatMessages.appendChild(div);
-    });
+  // ⚡ FIXED: Absolute null check added for editorContent to completely eliminate the crash
+  var editorContent = document.getElementById('editorContent');
+  if (editorContent) {
+    editorContent.style.display = 'none';
   }
+
+  // ⚡ FIXED: Absolute null check added for chatContainer to secure class validation
+  var chatContainer = document.getElementById('chatContainer');
+  if (chatContainer) {
+    chatContainer.classList.remove('hidden');
+  }
+
+  if (chatMessages) {
+    chatMessages.innerHTML = '';
+    if (project.messages && project.messages.length > 0) {
+      project.messages.forEach(function (msg) {
+        var div = document.createElement('div');
+        div.className = 'chat-message ' + msg.sender;
+        var html = '<div class="message-content ' + msg.sender + '">' + (msg.sender === 'ai' ? formatMessage(msg.text) : escapeHtml(msg.text));
+        if (msg.attachedFiles && msg.attachedFiles.length > 0) {
+          html += '<div class="attached-files-display">';
+          msg.attachedFiles.forEach(function (file) {
+            if (file.type === 'image') html += '<img src="' + file.dataUrl + '" alt="' + file.name + '" class="message-attachment-image">';
+            else html += '<div class="message-attachment-file">' + file.name + '</div>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+        div.innerHTML = html;
+        chatMessages.appendChild(div);
+      });
+    }
+  }
+  
   autoScrollToLatestMessage();
 }
+
 
 async function sendToBackend(description) {
   const token = localStorage.getItem('token');
