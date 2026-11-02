@@ -32,6 +32,7 @@ def get_ai_response(user_input: str, mode: str = "tech", history: list = None) -
         system_prompt = (
             "You are a Pro Website Builder. Return ONLY a JSON object with keys: "
             "'html', 'css', and 'js'. Use Tailwind CSS. "
+            "IMPORTANT: Do NOT say 'Hello', do NOT explain anything. ONLY raw JSON code."
         )
     else:
         system_prompt = (
