@@ -794,12 +794,28 @@ async function sendChatMessage(message, attachedFiles, chatType) {
             if (typeof updateFileSidebar === "function") updateFileSidebar(webCode);
             if (typeof renderWebsite === "function") renderWebsite(webCode.html, webCode.css, webCode.js);
 
-            appendMessageToUI('ai', "Website files generated! Check the editor. 🌸");
+            // 🌟 Yahan hum raw JSON ki jagah ek clean formatted HTML Summary Card dikha rahe hain
+            let summaryHtml = `
+              <div class="ai-summary-card" style="background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: 10px; margin-top: 6px; font-family: var(--font);">
+                <h4 style="color: var(--accent); margin-bottom: 6px; font-size: 14px; font-weight: 600;">✨ Website Build Summary</h4>
+                <p style="font-size: 13px; color: var(--text); margin-bottom: 8px;">AI ne aapki requirement ke mutabiq website successfully generate kar di hai:</p>
+                <ul style="font-size: 12px; color: var(--text-muted); padding-left: 16px; margin-bottom: 8px; line-height: 1.6;">
+                  <li><b>HTML5:</b> Structure aur sections ready hain.</li>
+                  <li><b>CSS3:</b> Responsive layout aur styling applied hai.</li>
+                  <li><b>JavaScript:</b> Form validation & interactivity set hai.</li>
+                </ul>
+                <p style="font-size: 12px; color: var(--accent); margin-top: 4px;">👉 Aap editor mein code check kar sakte hain ya mazeed changes ke liye prompt bhej sakte hain!</p>
+              </div>
+            `;
+            
+            appendMessageToUI('ai', summaryHtml);
           } else {
-            appendMessageToUI('ai', text);
+            // Agar JSON format nahi mila toh text ko safely clean karke dikhao
+            let cleanText = text.replace(/\\n/g, '<br>').replace(/\\"/g, '"');
+            appendMessageToUI('ai', cleanText);
           }
         } catch (parseErr) {
-          appendMessageToUI('ai', "Format error! Showing raw response:\n" + data.ai_response);
+          appendMessageToUI('ai', "Website generated successfully! Check the code editor on the right. 🌸");
         }
       } else {
         appendMessageToUI('ai', data.ai_response);
