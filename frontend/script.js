@@ -99,7 +99,7 @@ function saveHiddenChatsToStorage() {
 
 document.addEventListener('DOMContentLoaded', function () {
   initializeTheme();
-  setupSplashScreen();
+  setupSplashScreen(); // Yeh line honi chahiye
   setupScrollReveal();
   setupFAQ();
   setupEventListeners();
@@ -134,9 +134,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function setupSplashScreen() {
   var splash = document.getElementById('splashScreen');
-  setTimeout(function () {
-    if (splash) splash.classList.add('hidden');
-  }, 2500);
+  if (splash) {
+    // Thoda sa delay dekar fade out / hide karenge
+    setTimeout(function () {
+      splash.classList.add('hidden');
+      // Extra safety ke liye display none bhi kar sakte hain
+      setTimeout(function() {
+        splash.style.display = 'none';
+      }, 300);
+    }, 1500); // 1.5 seconds tak splash screen dikhegi phir hat jayegi
+  }
 }
 
 function setupScrollReveal() {
