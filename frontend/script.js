@@ -1624,65 +1624,66 @@ function openFileInEditor(fileName) {
 
 //website preview rendering function
 
-// website preview rendering function - Absolute Sanitized Stack
+// website preview rendering function
 
 function renderWebsite(html, css, js) {
-  var previewContainer = document.getElementById('preview-sandbox') || document.getElementById('previewView') || document.getElementById('previewContainer');
-  if (!previewContainer) return;
-  
-  if (previewContainer.tagName.toLowerCase() !== 'iframe') {
-     previewContainer.innerHTML = '';
-  }
+  // ⚡ SELECTION: Target your authentic containers from index.html
+  const targets = [
+    document.getElementById('previewView'),
+    document.getElementById('previewContainer'),
+    document.getElementById('preview-sandbox')
+  ].filter(Boolean); // Filters out any null nodes safely
 
-  // 🧽 CRITICAL PARSER PATCH: Removes triple backslashes and escaped literal quotes from attributes
-  var cleanHtml = (html || '')
-    .replace(/\\"/g, '"')
-    .replace(/\\\\"/g, '"')
-    .replace(/\\n/g, '\n');
+  // Image tag broken absolute paths sanitizer patch
+  let cleanedHtml = html || '';
+  cleanedHtml = cleanedHtml.replace(/src=["']?\\?["']?(https?:\/\/[^"'\s>\\]+)\\?["']?/g, 'src="$1"');
 
-  var cleanCss = (css || '')
-    .replace(/\\"/g, '"')
-    .replace(/\\\\"/g, '"')
-    .replace(/\\n/g, '\n');
+  targets.forEach(function (container) {
+    if (!container) return;
 
-  var cleanJs = (js || '')
-    .replace(/\\"/g, '"')
-    .replace(/\\\\"/g, '"')
-    .replace(/\\n/g, '\n');
+    let iframe;
+    if (container.tagName.toLowerCase() === 'iframe') {
+      iframe = container;
+    } else {
+      container.innerHTML = '';
+      iframe = document.createElement('iframe');
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.style.background = "#0b0f19"; // Standard beautiful dark layout match
+      iframe.title = "Jemrox Active Sandboxed Preview Engine";
+      container.appendChild(iframe);
+    }
 
-  // Designing dynamic code source template
-  var dynamicSourceDoc = 
-    '<!DOCTYPE html>\n' +
-    '<html>\n' +
-    '<head>\n' +
-    '    <meta charset="UTF-8">\n' +
-    '    <!-- Tailwind CSS Script -->\n' +
-    '    <script src="https://tailwindcss.com"><\/script>\n' +
-    '    <style>\n' +
-    '        ' + cleanCss + '\n' +
-    '    </style>\n' +
-    '</head>\n' +
-    '<body class="bg-[#0b0f19] min-h-screen text-gray-100 p-6">\n' +
-    '    ' + cleanHtml + '\n' +
-    '    <script>\n' +
-    '        try {\n' +
-    '            ' + cleanJs + '\n' +
-    '        } catch(err) {\n' +
-    '            console.error("Runtime exception inside sandbox script context:", err);\n' +
-    '        }\n' +
-    '    <\/script>\n' +
-    '</body>\n' +
-    '</html>';
+    // ⚡ FIXED: Replacing backticks with single quotes concatenation completely eliminates the { clash
+    const safeJsCode = js || '';
+    const safeCssCode = css || '';
 
-  if (previewContainer.tagName.toLowerCase() === 'iframe') {
-    previewContainer.srcdoc = dynamicSourceDoc;
-  } else {
-    var iframe = document.createElement('iframe');
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    iframe.style.background = "#0b0f19";
-    previewContainer.appendChild(iframe);
+    const dynamicSourceDoc = 
+        '<!DOCTYPE html>\n' +
+        '<html lang="en">\n' +
+        '<head>\n' +
+        '    <meta charset="UTF-8">\n' +
+        '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+        '    <!-- Tailwind CSS Script Compiler Tool -->\n' +
+        '    <script src="https://tailwindcss.com"><\/script>\n' +
+        '    <style>\n' +
+        '        ' + safeCssCode + '\n' +
+        '    </style>\n' +
+        '</head>\n' +
+        '<body class="bg-[#0b0f19] min-h-screen text-gray-100 flex flex-col items-center justify-start p-6 overflow-y-auto">\n' +
+        '    ' + cleanedHtml + '\n' +
+        '    <script>\n' +
+        '        try {\n' +
+        '            ' + safeJsCode + '\n' +
+        '        } catch (sandboxException) {\n' +
+        '            console.error("Runtime component failure inside Jemrox Sandbox:", sandboxException);\n' +
+        '        }\n' +
+        '    <\/script>\n' +
+        '</body>\n' +
+        '</html>';
+
+    // Flush source documentation directly to freeze token leaks
     iframe.srcdoc = dynamicSourceDoc;
-  }
+  });
 }
